@@ -1,0 +1,53 @@
+{
+  "name": "static-website-template",
+  "version": "1.0.0",
+  "description": "Template for a static website",
+  "main": "index.js",
+  "author": "Noah Kamara <mail@noahkamara.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/noahkamara/static-website-template"
+  },
+  "scripts": {
+    "css:scss": "sass src/scss:build/assets/css/ --style=compressed",
+    "css:autoprefixer": "postcss -u autoprefixer -r build/assets/css/*.css",
+    "css:lint": "stylelint src/scss/*.scss --syntax scss || true",
+    "css:tailwind": "npx tailwindcss -o build/assets/css/tailwind.css",
+    "build:css": "npm run css:tailwind && npm run css:lint && npm run css:scss && npm run css:autoprefixer",
+    "build:images": "imagemin src/images/**/* --out-dir=build/assets/img",
+    "build:js": "webpack --mode=production",
+    "build:html": "posthtml -c posthtml.json",
+    "build": "run-p build:*",
+    "serve": "browser-sync start --server \"build\" --files \"build\"",
+    "watch:css": "onchange \"src/scss\" -- npm run build:css",
+    "watch:images": "onchange \"src/images\" -- npm run build:images",
+    "watch:js": "onchange \"src/js\" -- webpack --mode=development",
+    "watch:html": "onchange \"src/views\" -- npm run build:html",
+    "watch": "run-p serve watch:*",
+    "dev": "run-p serve watch:* build:* ",
+    "prod": "run-p build:* "
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.14.7",
+    "autoprefixer": "^10.3.0",
+    "babel-loader": "^8.2.2",
+    "browser-sync": "^2.27.4",
+    "eslint": "^7.30.0",
+    "eslint-loader": "^4.0.2",
+    "htmlnano": "^1.0.0",
+    "imagemin-cli": "^6.0.0",
+    "onchange": "^7.1.0",
+    "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1",
+    "posthtml": "^0.16.4",
+    "posthtml-cli": "^0.10.0",
+    "posthtml-modules": "^0.7.4",
+    "sass": "^1.35.2",
+    "stylelint": "^13.13.1",
+    "tailwindcss": "^2.2.4",
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2",
+    "yarn-run-all": "^3.1.1"
+  }
+}
